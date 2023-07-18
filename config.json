@@ -1,0 +1,4 @@
+{
+    "adb_path": "adb",
+    "fastboot_path": "fastboot",
+}
