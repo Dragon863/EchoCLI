@@ -1,5 +1,6 @@
 # EchoCLI
 A tethered root solution for your echo dot 2nd generation.
+To start, run `main.py`
 ## ⚠️ Warning!
 - This is a TETHERED root solution
 - It is _recommended_ to block amazon's OTA server (https://d1s31zyz7dcc2d.cloudfront.net) to prevent updates from corrupting or removing root on your device
