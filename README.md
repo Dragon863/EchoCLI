@@ -25,6 +25,9 @@ You can find how this tool works on [my website](https://dragon863.github.io/blo
 
 Once you have rooted the device, a file called `preloader_no_hdr.bin` will be generated. To boot the device, you will need to install [mtkclient](https://github.com/bkerler/mtkclient), copy the file into its directory and run `python mtk plstage --preloader=preloader_no_hdr.bin`. Replace `python` with `python3` depending on the python version you have installed.
 
+## Home assistant indicator 
+When using the home assistant indicator feature, I would recommend using a raspberry pi zero w or other small SBC to run the python flask server, and boot the device. You can use crontab to make this happen automatically on boot using mtkclient.
+
 ## Thanks
 
 This project would not have been possible without:
