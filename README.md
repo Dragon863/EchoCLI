@@ -22,6 +22,8 @@ pip install -r requirements.txt
 ## Documentation
 You can find how this tool works on [my website](https://dragon863.github.io/blog/).
 
+Once you have rooted the device, a file called `preloader_no_hdr.bin` will be generated. To boot the device, you will need to install [mtkclient](https://github.com/bkerler/mtkclient), copy the file into its directory and run `python mtk plstage --preloader=preloader_no_hdr.bin`. Replace `python` with `python3` depending on the python version you have installed.
+
 ## Thanks
 
 This project would not have been possible without:
