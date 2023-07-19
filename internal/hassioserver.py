@@ -1,3 +1,5 @@
+# Unfortunately I have not had the time to test the server part of the code, so please contact me if there are any issues.
+
 import requests
 from flask import Flask
 

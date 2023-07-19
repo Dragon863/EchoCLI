@@ -216,7 +216,7 @@ def main():
     flash_data(
         dev, b"EMMC_BOOT" + b"\x00" * ((0x200 * 8) - 9), 0
     )  # Thanks to chaosmaster for this useful snippet
-
+    dump_binary(dev, "../../preloader_no_hdr.bin", 0, 1024)
     switch_user(dev)
 
     nonzero = []
