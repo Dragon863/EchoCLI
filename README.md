@@ -1,6 +1,9 @@
 # EchoCLI
 A tethered root solution for your echo dot 2nd generation.
 To start, run `main.py`
+<br>
+
+[<kbd> <br> How does this work? <br> </kbd>](link)
 ## ⚠️ Warning!
 - This is a TETHERED root solution
 - It is _recommended_ to block amazon's OTA servers (https://d1s31zyz7dcc2d.cloudfront.net and https://d1s31zyz7dcc2d.cloudfront.prod.ota-cloudfront.net) to prevent updates from corrupting or removing root on your device
