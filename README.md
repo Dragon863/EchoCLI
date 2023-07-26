@@ -3,7 +3,7 @@ A tethered root solution for your echo dot 2nd generation.
 To start, run `main.py`
 <br>
 
-[<kbd> <br> How does this work? <br> </kbd>](link)
+[<kbd> <br> How does this work? <br> </kbd>](https://dragon863.github.io/blog/echoroot.html)
 ## ⚠️ Warning!
 - This is a TETHERED root solution
 - It is _recommended_ to block amazon's OTA servers (https://d1s31zyz7dcc2d.cloudfront.net and https://d1s31zyz7dcc2d.cloudfront.prod.ota-cloudfront.net) to prevent updates from corrupting or removing root on your device
@@ -24,7 +24,7 @@ pip install -r requirements.txt
 ```
 
 ## Documentation
-You can find how this tool works on [my website](https://dragon863.github.io/blog/).
+You can find how this tool works on [my website](https://dragon863.github.io/blog/echoroot.html).
 
 Once you have rooted the device, a file called `preloader_no_hdr.bin` will be generated. To boot the device, you will need to install [mtkclient](https://github.com/bkerler/mtkclient), copy the file into its directory and run `python mtk plstage --preloader=preloader_no_hdr.bin`. Replace `python` with `python3` depending on the python version you have installed.
 
