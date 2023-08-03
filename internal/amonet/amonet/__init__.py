@@ -237,7 +237,7 @@ def main():
         log_info("Detected that device is using slot B.")
         slot = "b"
 
-    dump_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}.bin"][0])
+    dump_binary(dev, f"lk_{slot}", gpt[f"lk_{slot}.bin"][0])
     shutil.copyfile(f"lk_{slot}.bin", f"backup/lk_{slot}.bin")
     log_info(f"Backed up LK {slot} partition...")
     """
