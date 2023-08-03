@@ -65,7 +65,7 @@ def flash_data(dev, data, start_block, max_size=0):
 
     blocks = len(data) // 0x200
     for x in range(blocks):
-        log_info("[{} / {}]".format(x + 1, blocks), end="\r")
+        print("[{} / {}]".format(x + 1, blocks), end="\r")
         dev.emmc_write(start_block + x, data[x * 0x200 : (x + 1) * 0x200])
     print("")
 
@@ -90,7 +90,7 @@ def dump_binary(dev, outfile, start_block, nblocks=0):
                 fout.write(data)
                 start_block = start_block + 1
                 nblocks = nblocks - 1
-                log_info(str(100 - ((nblocks / initialBlocks) * 100)) + "%", end="\r")
+                print(str(100 - ((nblocks / initialBlocks) * 100)) + "%", end="\r")
                 # print("[{} / {}]".format(nblocks, initialBlocks), end='\r')
         log_success(f"Dumped {outfile} from device.")
     except:
@@ -112,7 +112,7 @@ def flash_binary(dev, path, start_block, max_size=0):
 
     blocks = len(data) // 0x200
     for x in range(blocks):
-        log_info("[{} / {}]".format(x + 1, blocks), end="\r")
+        print("[{} / {}]".format(x + 1, blocks), end="\r")
         dev.emmc_write(start_block + x, data[x * 0x200 : (x + 1) * 0x200])
     print()
 
