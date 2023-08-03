@@ -190,6 +190,7 @@ def main():
         log_info("Restored preloader...")
         flash_binary(dev, "misc.bin", gpt["misc"][0])
         log_info("Restored misc partition...")
+        switch_user(dev)
         if "lk_a.bin" in os.listdir("backup/"):
             flash_binary(dev, "lk_a.bin", gpt["lk_a"][0])
             log_info("Restored lk_a partition...")
@@ -200,7 +201,8 @@ def main():
             "Restored device! If you experience any problems, please contact me."
         )
 
-    dump_binary(dev, "misc.bin", gpt["misc"][0])
+    switch_user(dev)
+    dump_binary(dev, "misc.bin", gpt["misc"][0], gpt["misc"][1])
     shutil.copyfile("misc.bin", "backup/misc.bin")
     log_info("Backed up misc partition...")
     switch_boot0(dev)
