@@ -166,6 +166,37 @@ def check_boot_slot():
     return slot
 
 
+def check_preloader():
+    with open("preloader.bin", "rb") as f:
+        buffer = f.read(32)
+    return buffer[:9] == b'EMMC_BOOT' and struct.unpack("<I", buffer[0x10:0x14])[0] != 0
+
+
+def extract_preloader():
+    preloader = b''
+    with open("preloader.bin", "rb") as f:
+        preloader = f.read()
+        start = preloader.find(b'MMM')
+        length = struct.unpack("<I", preloader[start+0x20:start+0x24])[0]
+        preloader = preloader[start:start+length]
+
+    pattern_5xxx = bytes.fromhex('73b506464ff4c060')
+    pattern_6xxx = bytes.fromhex('2de9f046cfb00c46')
+    if preloader.find(pattern_6xxx):
+        log_info("6.x preloader detected, applying unlock patch")
+        patch = bytes.fromhex('00207047cfb00c46')
+        preloader = preloader.replace(pattern_6xxx, patch)
+    elif preloader.find(pattern_5xxx):
+        log_info("5.x preloader detected, applying unlock patch")
+        patch = bytes.fromhex('012070474ff4c060')
+        preloader = preloader.replace(pattern_5xxx, patch)
+    else:
+        log_fail("Unknown preloader detected, we can not patch the same")
+
+    with open("../../preloader_no_hdr.bin", "wb") as f:
+        f.write(preloader)
+
+
 def main():
     while True:
         try:
@@ -232,19 +263,23 @@ def main():
     )
     input()
     log_info("Backing up preloader...")
-    dump_binary(dev, "backup/preloader.bin", 0, 1024)
-    log_info("Clearing preloader header")
-    flash_data(
-        dev, b"EMMC_BOOT" + b"\x00" * ((0x200 * 8) - 9), 0
-    )  # Thanks to chaosmaster for this useful snippet
-    dump_binary(dev, "../../preloader_no_hdr.bin", 0, 1024)
+    dump_binary(dev, "preloader.bin", 0, 1024)
+    if check_preloader():
+        shutil.copyfile("preloader.bin", "backup/preloader.bin")
+        log_info("Clearing preloader header")
+        # Thanks to chaosmaster for this useful snippet
+        flash_data(dev, b"EMMC_BOOT" + b"\x00" * ((0x200 * 8) - 9), 0)
+    else:
+        log_info("Looks like this preloader was already cleared. Skipping clearing and backup steps...")
+
+    extract_preloader()
     log_info("Downgrading rpmb header")
     dev.rpmb_write(b"\x00" * 0x100)
     rpmb = dev.rpmb_read()
     if rpmb != b"\x00" * 0x100:
         dev.reboot()
         log_fail("downgrade failure, giving up")
-    log("rpmb downgrade ok")
+    log_info("rpmb downgrade ok")
 
     switch_user(dev)
     nonzero = []
