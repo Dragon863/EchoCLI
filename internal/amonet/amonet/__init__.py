@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import shutil
 import os
+import sys
 
 from amonet.common import Device
 from amonet.handshake import handshake
@@ -26,6 +27,7 @@ def log_fail(msg: str):
     current_time = datetime.datetime.now().time()
     formatted_time = current_time.strftime("%H:%M:%S")
     print(f"[{formatted_time}] \033[91mFAIL:\x1b[0m", msg)
+    sys.exit(1)
 
 
 def log_success(msg: str):
@@ -34,17 +36,24 @@ def log_success(msg: str):
     print(f"[{formatted_time}] \033[92mSUCCESS:\x1b[0m", msg)
 
 
-def modify_lk(version: str, slot: str):
-    if version == "6.5.0.5":
-        with open(f"lk_{slot}.bin", "r+b") as file:
-            file.seek(0x00001B00)
-            file.write(bytes.fromhex("80940200079702000120704700214ff4"))
+def is_patched(slot: str):
+    data = b''
+    patch = bytes.fromhex('0120704700214ff4')
+    with open(f"lk_{slot}.bin", "rb") as f:
+        data = f.read()
+    return data.find(patch) > -1
 
-    else:
-        with open(f"lk_{slot}.bin", "r+b") as file:
-            file.seek(0x00001B00)
-            file.write(bytes.fromhex("489402004f9702000120704700214ff4"))
-    return
+def modify_lk(slot: str):
+    data = b''
+    pattern = bytes.fromhex('10b5c0b000214ff4')
+    patch = bytes.fromhex('0120704700214ff4')
+    with open(f"lk_{slot}.bin", "rb") as f:
+        data = f.read()
+    if data.find(pattern) == -1:
+        log_fail('Pattern not found. Lk can not be patched')
+    data.replace(pattern, patch)
+    with open(f"lk_{slot}.bin", "wb") as f:
+        f.write(data)
 
 
 def switch_boot0(dev):
@@ -239,31 +248,12 @@ def main():
         slot = "b"
 
     dump_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}"][0], gpt[f"lk_{slot}"][1])
+    if is_patched:
+        log_info(f"LK is already patched. Exiting...")
+        return
     shutil.copyfile(f"lk_{slot}.bin", f"backup/lk_{slot}.bin")
     log_info(f"Backed up LK {slot} partition...")
-    """
-    Calculate md5 hash of lk to determine version. We do this to avoid copyright issues; by doing this we don't need the copyrighted files, we can 
-    pull them from the device and modify them.
-    """
-    with open(f"lk_{slot}.bin", "rb") as f:
-        hash = hashlib.md5()
-        while chunk := f.read(8192):
-            hash.update(chunk)
-
-    if hash.hexdigest().lower() == "f43bcd1e4ea0bb1fec68da10cc8109fb":
-        log_info("Detected lk version 6.5.0.5")
-        version = "6.5.0.5"
-    elif hash.hexdigest().lower() == "54e0629919dc284552215ca084f7834f":
-        log_info("Detected lk version 6.5.5.9")
-        version = "6.5.5.9"
-    else:
-        log_warn(
-            """
-                Could not detect LK version. Try updating your device using an OTA, or the official app if this method has not yet been patched. Press enter to continue, or press Ctrl+C to abort (safer).
-                """
-        )
-        input()
-    modify_lk(version=version, slot=slot)  # Patch the binary
+    modify_lk(slot=slot)  # Patch the binary
     log_success("Modified Little Kernel! Flashing back to device now.")
     flash_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}.bin"][0])
     log_success(
