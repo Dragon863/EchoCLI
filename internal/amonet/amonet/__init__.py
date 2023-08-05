@@ -188,7 +188,7 @@ def main():
         switch_boot0(dev)
         flash_binary(dev, "backup/preloader.bin", 0)
         log_info("Restored preloader...")
-        seitch_user(dev)
+        switch_user(dev)
         flash_binary(dev, "misc.bin", gpt["misc"][0])
         log_info("Restored misc partition...")
         switch_user(dev)
