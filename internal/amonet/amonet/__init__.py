@@ -51,7 +51,7 @@ def modify_lk(slot: str):
         data = f.read()
     if data.find(pattern) == -1:
         log_fail('Pattern not found. Lk can not be patched')
-    data.replace(pattern, patch)
+    data = data.replace(pattern, patch)
     with open(f"lk_{slot}.bin", "wb") as f:
         f.write(data)
 
@@ -154,6 +154,18 @@ def parse_gpt(dev):
     return parts
 
 
+def check_boot_slot():
+    index = -1
+    data = b''
+    slot = "b"
+    with open("misc.bin", "rb") as file:
+        data = file.read()
+        index = data.find(b'ABB')
+    if data[index+4] > data[index+5]:
+        slot = "a"
+    return slot
+
+
 def main():
     while True:
         try:
@@ -198,9 +210,6 @@ def main():
         flash_binary(dev, "backup/preloader.bin", 0)
         log_info("Restored preloader...")
         switch_user(dev)
-        flash_binary(dev, "misc.bin", gpt["misc"][0])
-        log_info("Restored misc partition...")
-        switch_user(dev)
         if "lk_a.bin" in os.listdir("backup/"):
             flash_binary(dev, "lk_a.bin", gpt["lk_a"][0])
             log_info("Restored lk_a partition...")
@@ -212,9 +221,9 @@ def main():
         )
 
     switch_user(dev)
-    dump_binary(dev, "misc.bin", gpt["misc"][0], gpt["misc"][1])
+    log_info("Backing up misc partition...")
+    dump_binary(dev, "misc.bin", gpt["misc"][0] + 1, 1)
     shutil.copyfile("misc.bin", "backup/misc.bin")
-    log_info("Backed up misc partition...")
     switch_boot0(dev)
     log_info(
         """
@@ -222,40 +231,34 @@ def main():
         """
     )
     input()
+    log_info("Backing up preloader...")
     dump_binary(dev, "backup/preloader.bin", 0, 1024)
-    log_info("Backed up preloader...")
     log_info("Clearing preloader header")
     flash_data(
         dev, b"EMMC_BOOT" + b"\x00" * ((0x200 * 8) - 9), 0
     )  # Thanks to chaosmaster for this useful snippet
     dump_binary(dev, "../../preloader_no_hdr.bin", 0, 1024)
+    log_info("Downgrading rpmb header")
+    dev.rpmb_write(b"\x00" * 0x100)
+    rpmb = dev.rpmb_read()
+    if rpmb != b"\x00" * 0x100:
+        dev.reboot()
+        log_fail("downgrade failure, giving up")
+    log("rpmb downgrade ok")
+
     switch_user(dev)
-
     nonzero = []
-    with open("misc.bin", "r+b") as file:
-        data = file.read(1)
-        while data:
-            data = file.read(1)
-            if data != b"\x00":
-                nonzero.append(data)
-    if (
-        data[3] > data[4]
-    ):  # Check 0x363 in a hex editor, it determines the A/B slots Thanks @j10hx40r !
-        log_info("Detected that device is using slot A.")
-        slot = "a"
-    else:
-        log_info("Detected that device is using slot B.")
-        slot = "b"
-
+    slot=check_boot_slot()
+    log_info(f"Detected that device is using slot {slot.upper()}.")
+    log_info(f"Backing up lk_{slot}...")
     dump_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}"][0], gpt[f"lk_{slot}"][1])
-    if is_patched:
+    if is_patched(slot):
         log_info(f"LK is already patched. Exiting...")
         return
     shutil.copyfile(f"lk_{slot}.bin", f"backup/lk_{slot}.bin")
-    log_info(f"Backed up LK {slot} partition...")
     modify_lk(slot=slot)  # Patch the binary
     log_success("Modified Little Kernel! Flashing back to device now.")
-    flash_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}.bin"][0])
+    flash_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}"][0])
     log_success(
         "Done! To finalise the process, return to the previous menu and use fos_flags to gain root via ADB."
     )
