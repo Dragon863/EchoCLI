@@ -242,10 +242,10 @@ def main():
         log_info("Restored preloader...")
         switch_user(dev)
         if "lk_a.bin" in os.listdir("backup/"):
-            flash_binary(dev, "lk_a.bin", gpt["lk_a"][0])
+            flash_binary(dev, "backup/lk_a.bin", gpt["lk_a"][0])
             log_info("Restored lk_a partition...")
         elif "lk_b.bin" in os.listdir("backup/"):
-            flash_binary(dev, "lk_b.bin", gpt["lk_b"][0])
+            flash_binary(dev, "backup/lk_b.bin", gpt["lk_b"][0])
             log_info("Restored lk_b partition...")
         log_success(
             "Restored device! If you experience any problems, please contact me."
