@@ -236,26 +236,35 @@ def main():
 
     print("Would you like to root your device, or restore it?")
     choice = input("[root/restore] > ")
+
+    switch_user(dev)
+    log_info("Fetching misc partition...")
+    dump_binary(dev, "misc.bin", gpt["misc"][0] + 1, 1)
+    slot=check_boot_slot()
+    log_info(f"Detected that device is using slot {slot.upper()}.")
+
     if choice.lower() == "restore":
         switch_boot0(dev)
+        log_info("Restoring preloader...")
         flash_binary(dev, "backup/preloader.bin", 0)
-        log_info("Restored preloader...")
+
+        log_info("Downgrading rpmb header")
+        dev.rpmb_write(b"\x00" * 0x100)
+        rpmb = dev.rpmb_read()
+        if rpmb != b"\x00" * 0x100:
+            dev.reboot()
+            log_fail("downgrade failure, giving up")
+        log_info("rpmb downgrade ok")
+
         switch_user(dev)
-        if "lk_a.bin" in os.listdir("backup/"):
-            flash_binary(dev, "backup/lk_a.bin", gpt["lk_a"][0])
-            log_info("Restored lk_a partition...")
-        elif "lk_b.bin" in os.listdir("backup/"):
-            flash_binary(dev, "backup/lk_b.bin", gpt["lk_b"][0])
-            log_info("Restored lk_b partition...")
+        if f"lk_{slot}.bin" in os.listdir("backup/"):
+            log_info(f"Restoring lk_{slot} partition...")
+            flash_binary(dev, f"backup/lk_{slot}.bin", gpt[f"lk_{slot}"][0])
         log_success(
             "Restored device! If you experience any problems, please contact me."
         )
         return
 
-    switch_user(dev)
-    log_info("Backing up misc partition...")
-    dump_binary(dev, "misc.bin", gpt["misc"][0] + 1, 1)
-    shutil.copyfile("misc.bin", "backup/misc.bin")
     switch_boot0(dev)
     log_info(
         """
@@ -284,8 +293,6 @@ def main():
 
     switch_user(dev)
     nonzero = []
-    slot=check_boot_slot()
-    log_info(f"Detected that device is using slot {slot.upper()}.")
     log_info(f"Backing up lk_{slot}...")
     dump_binary(dev, f"lk_{slot}.bin", gpt[f"lk_{slot}"][0], gpt[f"lk_{slot}"][1])
     if is_patched(slot):
