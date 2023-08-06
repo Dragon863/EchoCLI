@@ -250,6 +250,7 @@ def main():
         log_success(
             "Restored device! If you experience any problems, please contact me."
         )
+        return
 
     switch_user(dev)
     log_info("Backing up misc partition...")
