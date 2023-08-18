@@ -56,7 +56,7 @@ class CLI:
 
     def print_help(self):
         print(
-            "Welcome to echo_cli! This is an interactive shell for the amazon echo biscuit_puffin (echo dot 2nd generation)"
+            "Welcome to echo_cli! This is an interactive shell for the Amazon Echo biscuit_puffin (echo dot 2nd generation)"
         )
         print("For documentation, please visit https://dragon863.github.io/blog/")
         print("Usage:")
@@ -64,20 +64,20 @@ class CLI:
         print("To set ADB path, please edit config.json")
 
     def main(self):
-        print()
-        options = [
-            "Rooting or restore device",
-            "Setup recorder",
-            "Start or restart process",
-            "Setup home assistant indicator",
-            "Exit",
-        ]
-        for index, option in enumerate(options):
-            print(
-                f"\033[36m{str(index+1)}:\x1b[0m {option}"
-            )  # Please excuse the horrible formatting!
-        print()
         while True:
+            print()
+            options = [
+                "Rooting or restore device",
+                "Setup recorder",
+                "Start or restart process",
+                "Setup home assistant indicator",
+                "Exit",
+            ]
+            for index, option in enumerate(options):
+                print(
+                    f"\033[36m{str(index+1)}:\x1b[0m {option}"
+                )  # Please excuse the horrible formatting!
+            print()
             option = str(input("\033[36mSelect an option:\x1b[0m > "))
             if (
                 option.isdigit()
