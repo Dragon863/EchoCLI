@@ -4,10 +4,13 @@ To start, run `main.py`
 <br>
 
 [<kbd> <br> How does this work? <br> </kbd>](https://dragon863.github.io/blog/echoroot.html)
-## ⚠️ Warning!
-- This is a TETHERED root solution
-- It is _recommended_ to block amazon's OTA servers (https://d1s31zyz7dcc2d.cloudfront.net and https://d1s31zyz7dcc2d.cloudfront.prod.ota-cloudfront.net) to prevent updates from corrupting or removing root on your device
-- I am not responsible for any damage to your device
+
+## Notice
+Due to software updates being pushed constantly, I cannot guarantee that this will work for your echo. If you encounter any issues, feel free to contact me, and if you find a bug pull requests are welcome.
+
+> **Warning**
+> 
+> **This is a TETHERED root solution** It is _recommended_ to block amazon's OTA servers (https://d1s31zyz7dcc2d.cloudfront.net and https://d1s31zyz7dcc2d.cloudfront.prod.ota-cloudfront.net) to prevent updates from corrupting or removing root on your device. I am not responsible for any damage to your device
 
 ## Features
 - Rooted ADB shell over USB or Wi-Fi
