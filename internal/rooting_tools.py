@@ -21,12 +21,12 @@ def root_menu(cli):
                 fos_flag_value = calculate_fos_flags()
                 cli.log_info(f"Setting fos_flags to {fos_flag_value} using fastboot...")
                 cli.log_info(
-                    "Please replug your device now, holding the uber (dot) button. When you see a green LED ring, press enter to continue..."
+                    "Please replug your device now and run the mtkclient command in the README in another terminal whilst holding the uber (dot) button. When you see a green LED ring, press enter to continue..."
                 )
                 input("[Waiting for enter press...] > ")
                 try:
                     os.system(f"{cli.fastboot_path} oem flags {str(fos_flag_value)}")
-                    cli.log_success("Successfully set fos_flags! Rebooting...")
+                    cli.log_success("Successfully set fos_flags, your device is now rooted! Your echo will shut down, and you will be able to boot it using the mtkclient command in the README")
                     os.system(f"{cli.fastboot_path} reboot")
                     return
                 except Exception as e:
