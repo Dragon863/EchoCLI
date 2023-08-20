@@ -19,12 +19,14 @@ Due to software updates being pushed constantly, I cannot guarantee that this wi
 - Restore your device to factory configuration
 
 ## Install
-This project requires python 3.
-I recommend using linux for running this program. Please ensure you have disabled ModemManager if you have it installed.
+- This project requires python 3.
+- I recommend using linux for running this program. Please ensure you have disabled ModemManager if you have it installed.
 Install requirements using `pip`:
 ```sh
 pip install -r requirements.txt
 ```
+- You will also require fastboot and ADB, there is a good guide on how to install these [here](https://wiki.lineageos.org/adb_fastboot_guide). After downloading these you can set the executable path in the config.json file.
+- Please ensure that the micro USB cable you use to connect your echo dot is a data cable and not a power-only variant.
 
 ## Documentation
 You can find how this tool works on [my website](https://dragon863.github.io/blog/echoroot.html).
@@ -37,7 +39,7 @@ When using the home assistant indicator feature, I would recommend using a raspb
 ## Thanks
 
 This project would not have been possible without:
-- [j10hx40r](https://forum.xda-developers.com/m/j10hx40r.11878441/) - For helping me with initially rooting my device, showing me how to use fos_flags in combination and generally pointing me in the right direction when finding resources
+- [j10hx40r](https://forum.xda-developers.com/m/j10hx40r.11878441/) - For helping me with initially rooting my device, redesigning the patching system and showing me how to use fos_flags in combination and generally pointing me in the right direction when finding resources
 - [xyzz's Amonet](https://github.com/xyzz/amonet) - This is the exploit I have adapted for this device, including the bootrom exploit
 - [chaosmaster](https://github.com/chaosmaster) - Wrote lots of useful amonet code from which I used several snippets, including for fixing my GPT
 
