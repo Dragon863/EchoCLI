@@ -4,12 +4,12 @@ from .fos_flags import calculate_fos_flags
 
 
 def root_menu(cli):
-    print()
-    options = ["Root or restore", "Calculate and set fos_flags", "Exit"]
-    for index, option in enumerate(options):
-        print(f"\033[36m{str(index+1)}:\x1b[0m {option}")
-    print()
     while True:
+        print()
+        options = ["Root or restore", "Calculate and set fos_flags", "Previous menu"]
+        for index, option in enumerate(options):
+            print(f"\033[36m{str(index+1)}:\x1b[0m {option}")
+        print()
         option = str(input("\033[36mSelect an option:\x1b[0m > "))
         if option.isdigit() and not int(option) > len(options) and not int(option) < 1:
             if option == "1":
