@@ -37,7 +37,7 @@ def setup_recorder(cli):
 
     cli.log_info("Starting processes...")
     os.system(
-        f'{cli.adb_path} shell "/data/local/tmp/busybox nohup sh /data/local/tmp/led.sh &>/dev/null &"'
+        f'{cli.adb_path} shell "/data/local/tmp/busybox nohup sh /data/local/tmp/spy.sh &>/dev/null &"'
     )
     cli.log_success("Started process!")
     return
