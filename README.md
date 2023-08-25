@@ -36,6 +36,9 @@ Once you have rooted the device, a file called `preloader_no_hdr.bin` will be ge
 ## Home assistant indicator 
 When using the home assistant indicator feature, I would recommend using a raspberry pi zero w or other small SBC to run the python flask server, and boot the device. You can use crontab to make this happen automatically on boot using mtkclient.
 
+## Bricked you echo?
+Follow the guide [here](https://github.com/Dragon863/EchoCLI/blob/main/debrick.md) to use mtkclient for unbricking a rooted or partially rooted echo
+
 ## Thanks
 
 This project would not have been possible without:
