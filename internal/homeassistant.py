@@ -23,11 +23,11 @@ def setup_hassio(cli):
     handle(push_led, cli)
     push_curl = os.system(f"{cli.adb_path} push shell/curl /data/local/tmp")
     handle(push_curl, cli)
-    chmod_curl = os.system(f"{cli.adb_path} shell toybox chmod +x curl")
+    chmod_curl = os.system(f"{cli.adb_path} shell toybox chmod +x /data/local/tmp/curl")
     handle(chmod_curl, cli)
     push_busybox = os.system(f"{cli.adb_path} push shell/busybox /data/local/tmp")
     handle(push_busybox, cli)
-    chmod_busybox = os.system(f"{cli.adb_path} shell toybox chmod +x busybox")
+    chmod_busybox = os.system(f"{cli.adb_path} shell toybox chmod +x /data/local/tmp/busybox")
     handle(chmod_busybox, cli)
 
     cli.log_success(
