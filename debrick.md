@@ -8,6 +8,6 @@ Make sure you have the tools wget, mtkclient and unzip installed
 5. Rename the files `lk.img`, `boot.img` and `system.img` to `lk_a.img`, `boot_a.img` and `system_a.img` respectively,  and then make copies of these, replacing the `_a` for `_b`, for example `lk_b.img`. After this, rename tee.img to tee1.img and make a copy of it called tee2.img . It is probably easiest to complete this step in a file manager. The directory will look like this:
 ![files](https://i.imgur.com/c7KhCQe.png)
 6. Plug in your echo. It will boot into "bootrom" mode after the blue lights have stopped, you will know this because the lights will turn off and it will show as `0e8d:0003 MediaTek Inc. MT6227 phone` in `lsusb`.
-7. Run `sudo mtk wl . --preloader [path to mtkclient]/Loader/Preloader/preloader_biscuit.bin`
+7. Clone the [mtkclient](https://github.com/bkerler/mtkclient) repository to your computer if you have not done so already, then run `sudo mtk wl . --preloader [path to mtkclient]/Loader/Preloader/preloader_biscuit.bin`
 
 This should flash your device to stock firmware. You will have to re-run EchoCLI afterwards, but once you have run step 7 you should first unplug your device to check that it boots correctly.
