@@ -44,7 +44,7 @@ def root_menu(cli):
 
 def root(cli):
     cli.log_info(
-        "Please short the device as shown in the image at https://dragon863.github.io/blog/mainboard.jpg"
+        "Please short the device as shown in the image at https://danieldb.uk/posts/alexa-1/mainboard.jpg"
     )
     cli.log_info("To open the device, you will need a torx 8 screwdriver.")
     os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/amonet")
