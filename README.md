@@ -5,6 +5,9 @@ To start, run `main.py`
 
 [<kbd> <br> How does this work? <br> </kbd>](https://dragon863.github.io/blog/echoroot.html)
 
+## Caution 
+As of 12.08.2024, there have been multiple reports that Amazon may have patched the vulnerability in the preloader that part of this exploit relies on. I would advise against rooting your echo at this time until this issue has been investigated 
+
 ## Notice
 Due to software updates being pushed constantly, I cannot guarantee that this will work for your echo. If you encounter any issues, feel free to contact me, and if you find a bug pull requests are welcome.
 
