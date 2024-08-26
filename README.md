@@ -5,9 +5,6 @@ To start, run `main.py`
 
 [<kbd> <br> How does this work? <br> </kbd>](https://dragon863.github.io/blog/echoroot.html)
 
-## Caution 
-As of 12.08.2024, there have been multiple reports that Amazon may have patched the vulnerability in the preloader that part of this exploit relies on. I would advise against rooting your echo at this time until this issue has been investigated 
-
 ## Notice
 Due to software updates being pushed constantly, I cannot guarantee that this will work for your echo. If you encounter any issues, feel free to contact me, and if you find a bug pull requests are welcome.
 
@@ -34,7 +31,7 @@ pip install -r requirements.txt
 ## Documentation
 You can find how this tool works on [my website](https://dragon863.github.io/blog/echoroot.html).
 
-Once you have rooted the device, a file called `preloader_no_hdr.bin` will be generated. To boot the device, you will need to install [mtkclient](https://github.com/bkerler/mtkclient), copy the file into its directory and run `python mtk plstage --preloader=preloader_no_hdr.bin`. Replace `python` with `python3` depending on the python version you have installed.
+Once you have rooted the device, a file called `preloader_no_hdr.bin` will be generated. To boot the device, you will need to install [mtkclient](https://github.com/bkerler/mtkclient), copy the file into its directory and run `python mtk plstage --ptype=kamakiri2 --preloader=preloader_no_hdr.bin`. Replace `python` with `python3` depending on the python version you have installed.
 
 ## Home assistant indicator 
 When using the home assistant indicator feature, I would recommend using a raspberry pi zero w or other small SBC to run the python flask server, and boot the device. You can use crontab to make this happen automatically on boot using mtkclient.
