@@ -6,7 +6,8 @@ To start, run `main.py`
 [<kbd> <br> How does this work? <br> </kbd>](https://dragon863.github.io/blog/echoroot.html)
 
 ## Notice
-Due to software updates being pushed constantly, I cannot guarantee that this will work for your echo. If you encounter any issues, feel free to contact me, and if you find a bug pull requests are welcome.
+- Due to software updates being pushed constantly, I cannot guarantee that this will work for your echo. If you encounter any issues, feel free to contact me, and if you find a bug pull requests are welcome.
+- It is **strongly** recommended that you run this on a linux machine, as I am unable to test it on Windows and there is no guarantee that Windows-specific bugs are not present
 
 > **Warning**
 > 
