@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> If you are looking to root your echo, this project is now obselete; please use the solution documented [here](https://xdaforums.com/t/unlock-root-twrp-unbrick-amazon-echo-dot-2nd-gen-2016-biscuit.4761416/) instead. Thank you so much to everyone who made this possible, it's been so fun to work on this project! :)
+
 # EchoCLI
 A tethered root solution for your echo dot 2nd generation.
 To start, run `main.py`
